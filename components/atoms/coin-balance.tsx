@@ -44,7 +44,7 @@ export function CoinBalance({
   }
 
   const coinBalance = (
-    <Card className={cn("bg-white", sizeClasses[size].card, className)}>
+    <Card className={cn("bg-white border-none shadow-none", sizeClasses[size].card, className)}>
       <CardContent className="p-0">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
