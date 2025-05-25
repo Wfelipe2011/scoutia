@@ -80,17 +80,31 @@ export function MetabaseIframe() {
       )}
 
       {iframeUrl && !error && (
-        <iframe
-          id="metabase-iframe"
-          src={iframeUrl}
-          frameBorder={0}
-          width="100%"
-          height={900}
-          style={{ display: isLoading ? "none" : "block" }}
-          onLoad={handleIframeLoad}
-          allowTransparency
-          title="Metabase Dashboard"
-        />
+        <div className="relative">
+          <iframe
+            id="metabase-iframe"
+            src={iframeUrl}
+            frameBorder={0}
+            width="100%"
+            height="1100"
+            style={{ display: isLoading ? "none" : "block" }}
+            onLoad={handleIframeLoad}
+            allowTransparency
+            title="Metabase Dashboard"
+          />
+          <div
+            className="
+              absolute
+              left-0
+              right-0
+              bottom-0
+              h-20
+              bg-white
+              z-10
+              pointer-events-none
+            "
+          />
+        </div>
       )}
     </div>
   )
