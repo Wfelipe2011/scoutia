@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { parseCookies } from "nookies";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
 
@@ -13,21 +12,13 @@ interface DecodedToken {
 }
 
 export function middleware(req: NextRequest) {
-  const cookies = parseCookies({
-    req: {
-      headers: {
-        cookie: req.headers.get("cookie"),
-      },
-    },
-  });
-
-  const token = cookies.token;
+  const token = req.cookies.get("token")?.value;
   const isAuthRoute = req.nextUrl.pathname.startsWith("/login");
 
   console.log("Rota autenticada?", isAuthRoute);
 
   if (isAuthRoute) {
-    console.log("Rota autenticada, continuando navegação");
+    console.log("Rota de login, liberado");
     return NextResponse.next();
   }
 
@@ -38,6 +29,7 @@ export function middleware(req: NextRequest) {
 
   try {
     const decoded = jwtDecode<DecodedToken>(token);
+
     const currentTime = Math.floor(Date.now() / 1000);
 
     if (decoded.exp && decoded.exp < currentTime) {
@@ -45,10 +37,10 @@ export function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    console.log(`[middleware] Usuário autenticado: ${decoded.userName} - Roles: ${decoded.roles} - Tenant: ${decoded.tenantId}`);
+    console.log(`[middleware] Autenticado: ${decoded.userName} - Roles: ${decoded.roles}`);
     return NextResponse.next();
   } catch (error) {
-    console.log("Erro ao decodificar o token, redirecionando para login", error);
+    console.log("Token inválido:", error);
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }

@@ -13,12 +13,12 @@ export function MetabaseIframe() {
   const [iframeUrl, setIframeUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const cookies = parseCookies();
-  const token = cookies.token;
-  const decoded = jwtDecode<DecodedToken>(token);
-
+  
   const fetchDashboardUrl = async () => {
     try {
+      const cookies = parseCookies();
+      const token = cookies.token;
+      const decoded = jwtDecode<DecodedToken>(token);
 
       setIsLoading(true)
       setError(null)
