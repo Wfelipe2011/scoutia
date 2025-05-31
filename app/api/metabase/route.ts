@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const tenantId = searchParams.get('tenantId')
-    const METABASE_SITE_URL = 'http://metabase.wfelipe.com.br';
+    const METABASE_SITE_URL = 'https://metabase.wfelipe.com.br';
     const METABASE_SECRET_KEY = process.env.METABASE_SECRET_KEY!;
 
     // Verificar se as variáveis de ambiente estão definidas
