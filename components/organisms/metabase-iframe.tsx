@@ -5,19 +5,24 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { AlertCircle, RefreshCw } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { parseCookies } from "nookies"
+import { jwtDecode } from "jwt-decode"
+import { DecodedToken } from "@/types/auth"
 
 export function MetabaseIframe() {
   const [iframeUrl, setIframeUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const cookies = parseCookies();
+  const token = cookies.token;
+  const decoded = jwtDecode<DecodedToken>(token);
 
   const fetchDashboardUrl = async () => {
     try {
+
       setIsLoading(true)
       setError(null)
-
-      // Buscar URL do iframe da API
-      const response = await fetch(`/api/metabase`)
+      const response = await fetch(`/api/metabase?tenantId=${decoded.tenantId}`)
 
       if (!response.ok) {
         throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`)
@@ -86,7 +91,7 @@ export function MetabaseIframe() {
             src={iframeUrl}
             frameBorder={0}
             width="100%"
-            height="1100"
+            height="2400"
             style={{ display: isLoading ? "none" : "block" }}
             onLoad={handleIframeLoad}
             allowTransparency

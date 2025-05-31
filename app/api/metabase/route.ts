@@ -3,8 +3,10 @@ import jwt from "jsonwebtoken"
 
 export async function GET(request: Request) {
   try {
-    const METABASE_SITE_URL = "https://metabase.wfelipe.com.br";
-    const METABASE_SECRET_KEY = "ef138f71db9d16b055eb1c3d1c230c342229017ca857125976f2b68bf0179469";
+    const { searchParams } = new URL(request.url);
+    const tenantId = searchParams.get('tenantId')
+    const METABASE_SITE_URL = 'http://metabase.wfelipe.com.br';
+    const METABASE_SECRET_KEY = process.env.METABASE_SECRET_KEY!;
 
     // Verificar se as variáveis de ambiente estão definidas
     if (!METABASE_SITE_URL || !METABASE_SECRET_KEY) {
@@ -12,9 +14,11 @@ export async function GET(request: Request) {
     }
 
     const payload = {
-      resource: { dashboard: 34 },
-      params: {},
-      exp: Math.round(Date.now() / 1000) + 10 * 60, // expira em 10 minutos
+      resource: { dashboard: 65 },
+      params: {
+        "cliente": [tenantId]
+      },
+      exp: Math.round(Date.now() / 1000) + 24 * 60 * 60 // Expira em 1 dia
     }
 
     const token = jwt.sign(payload, METABASE_SECRET_KEY)

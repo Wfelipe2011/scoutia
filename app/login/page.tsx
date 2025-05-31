@@ -12,7 +12,7 @@ export default function LoginPage() {
       {/* Área da imagem - apenas no desktop */}
       <div className="hidden lg:block relative bg-slate-900">
         <Image
-          src="/placeholder.svg?height=1080&width=1920&query=modern office workspace with clean design"
+          src="https://media.brightdata.com/2024/05/business_web_scraper_api-1.svg"
           alt="Workspace moderno e limpo"
           fill
           className="object-cover"
@@ -20,15 +20,7 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 bg-slate-900/20" />
         <div className="absolute bottom-8 left-8 right-8">
-          <blockquote className="text-white">
-            <p className="text-lg font-medium">
-              "O Scoutia transformou completamente nossa forma de trabalhar. A interface intuitiva e as funcionalidades
-              poderosas nos ajudam a ser mais produtivos todos os dias."
-            </p>
-            <footer className="mt-4">
-              <p className="text-sm text-slate-300">— Maria Silva, Gerente de Projetos</p>
-            </footer>
-          </blockquote>
+         
         </div>
       </div>
     </div>

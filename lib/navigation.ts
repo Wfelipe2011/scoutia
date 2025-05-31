@@ -20,17 +20,5 @@ export const navigationItems: NavItem[] = [
     href: "/whatsapp",
     icon: QrCode,
     description: "Capture leads via WhatsApp",
-  },
-  {
-    title: "Adquirir Leads",
-    href: "/leads",
-    icon: Users,
-    description: "Compre leads qualificados",
-  },
-  {
-    title: "Comprar Créditos",
-    href: "/creditos",
-    icon: Coins,
-    description: "Recarregue sua conta",
-  },
+  }
 ]

@@ -1,7 +1,7 @@
 "use client"
 
+import { useAuth } from "@/contexts/AuthContext"
 import { useState, type ChangeEvent, type FormEvent } from "react"
-import { useAuth } from "./use-auth"
 
 interface FormData {
   email: string
@@ -14,29 +14,18 @@ interface FormErrors {
 }
 
 export function useLoginForm() {
-  const { login, isLoading, error, clearError } = useAuth()
+  const { login, logout, loading } = useAuth()
 
   const [formData, setFormData] = useState<FormData>({
     email: "wfelipe2011@gmail.com",
     password: "123456",
   })
 
-  const [formErrors, setFormErrors] = useState<FormErrors>({})
   const [showPassword, setShowPassword] = useState(false)
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-
-    // Limpa erro do campo quando usuário começa a digitar
-    if (formErrors[name as keyof FormErrors]) {
-      setFormErrors((prev) => ({ ...prev, [name]: undefined }))
-    }
-
-    // Limpa erro geral quando usuário modifica qualquer campo
-    if (error) {
-      clearError()
-    }
   }
 
   const validateForm = (): boolean => {
@@ -53,8 +42,6 @@ export function useLoginForm() {
     } else if (formData.password.length < 6) {
       errors.password = "Senha deve ter pelo menos 6 caracteres"
     }
-
-    setFormErrors(errors)
     return Object.keys(errors).length === 0
   }
 
@@ -65,7 +52,7 @@ export function useLoginForm() {
       return
     }
 
-    await login(formData)
+    await login(formData.email, formData.password)
   }
 
   const togglePasswordVisibility = () => {
@@ -74,10 +61,9 @@ export function useLoginForm() {
 
   return {
     formData,
-    formErrors,
     showPassword,
-    isLoading,
-    error,
+    logout,
+    isLoading: loading,
     handleInputChange,
     handleSubmit,
     togglePasswordVisibility,

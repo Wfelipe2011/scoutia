@@ -5,18 +5,20 @@ import { Button } from "@/components/ui/button"
 import { InputField } from "../atoms/input-field"
 import { PasswordField } from "../atoms/password-field"
 import { useLoginForm } from "@/hooks/use-login-form"
+import { useEffect } from "react"
 
 export function LoginForm() {
   const {
     formData,
-    formErrors,
     showPassword,
     isLoading,
-    error,
+    logout,
     handleInputChange,
     handleSubmit,
     togglePasswordVisibility,
   } = useLoginForm()
+
+  useEffect(() => logout(), [])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
@@ -28,7 +30,6 @@ export function LoginForm() {
           placeholder="seu@email.com"
           value={formData.email}
           onChange={handleInputChange}
-          error={formErrors.email}
           required
           autoComplete="email"
           disabled={isLoading}
@@ -40,7 +41,6 @@ export function LoginForm() {
           placeholder="Digite sua senha"
           value={formData.password}
           onChange={handleInputChange}
-          error={formErrors.password}
           showPassword={showPassword}
           onTogglePassword={togglePasswordVisibility}
           required
@@ -48,12 +48,6 @@ export function LoginForm() {
           disabled={isLoading}
         />
       </div>
-
-      {error && (
-        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md" role="alert">
-          {error}
-        </div>
-      )}
 
       <div className="space-y-4">
         <Button
@@ -83,14 +77,14 @@ export function LoginForm() {
           )}
         </Button>
 
-        <div className="text-center">
+        {/* <div className="text-center">
           <Link
             href="/forgot-password"
             className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200"
           >
             Esqueci minha senha
           </Link>
-        </div>
+        </div> */}
       </div>
     </form>
   )
