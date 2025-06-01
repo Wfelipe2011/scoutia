@@ -6,13 +6,7 @@ import { PasswordField } from "../atoms/password-field"
 import { useLoginForm } from "@/hooks/use-login-form"
 
 export function LoginForm() {
-  const {
-    formData,
-    showPassword,
-    handleInputChange,
-    handleSubmit,
-    togglePasswordVisibility,
-  } = useLoginForm()
+  const { formData, showPassword, handleInputChange, handleSubmit, togglePasswordVisibility } = useLoginForm()
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
@@ -46,7 +40,7 @@ export function LoginForm() {
           type="submit"
           className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          "Entrar"
+          Entrar
         </Button>
 
         {/* <div className="text-center">
