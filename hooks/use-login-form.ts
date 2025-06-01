@@ -1,7 +1,9 @@
 "use client"
 
-import { useAuth } from "@/contexts/AuthContext"
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useRouter } from "next/navigation";
+import { env } from "@/infra/env"
+import { useState, type ChangeEvent, type FormEvent, startTransition } from "react"
+import { setCookie } from "nookies";
 
 interface FormData {
   email: string
@@ -14,8 +16,7 @@ interface FormErrors {
 }
 
 export function useLoginForm() {
-  const { login, logout, loading } = useAuth()
-
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     email: "wfelipe2011@gmail.com",
     password: "123456",
@@ -52,7 +53,27 @@ export function useLoginForm() {
       return
     }
 
-    await login(formData.email, formData.password)
+    const { email, password } = formData
+    const response = await fetch(`${env.API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setCookie(null, "token", data.token, {
+        maxAge: 60 * 60 * 24, // 1 dia
+        path: "/",
+      });
+
+      startTransition(() => {
+        router.push("/dashboard");
+      });
+    } else {
+      alert("Login falhou!");
+    }
+
   }
 
   const togglePasswordVisibility = () => {
@@ -62,8 +83,6 @@ export function useLoginForm() {
   return {
     formData,
     showPassword,
-    logout,
-    isLoading: loading,
     handleInputChange,
     handleSubmit,
     togglePasswordVisibility,
