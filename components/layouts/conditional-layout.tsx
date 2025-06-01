@@ -4,7 +4,7 @@ import type React from "react"
 import { usePathname } from "next/navigation"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/organisms/app-sidebar"
-import { AuthProvider } from "@/contexts/AuthContext"
+
 interface ConditionalLayoutProps {
   children: React.ReactNode
 }
@@ -21,7 +21,6 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
   }
 
   return (
-    <AuthProvider>
     <SidebarProvider defaultOpen={true}>
       <div className="flex h-screen w-full">
         <AppSidebar />
@@ -38,6 +37,5 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
         </SidebarInset>
       </div>
     </SidebarProvider>
-    </AuthProvider>
   )
 }

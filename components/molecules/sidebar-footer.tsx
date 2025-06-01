@@ -2,11 +2,11 @@
 
 import { LogOut, User } from "lucide-react"
 import { SidebarFooter, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar"
-import { useAuth } from "@/contexts/AuthContext"
+import { useLogout } from "@/hooks/use-auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function AppSidebarFooter() {
-  const { logout } = useAuth()
+  const { logout } = useLogout()
 
   const handleLogout = () => {
     logout()
