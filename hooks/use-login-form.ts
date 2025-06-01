@@ -18,8 +18,8 @@ interface FormErrors {
 export function useLoginForm() {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
-    email: "wfelipe2011@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
   })
 
   const [showPassword, setShowPassword] = useState(false)

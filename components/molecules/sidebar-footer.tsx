@@ -4,13 +4,33 @@ import { LogOut, User } from "lucide-react"
 import { SidebarFooter, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar"
 import { useLogout } from "@/hooks/use-auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useEffect, useState } from "react"
+import { parseCookies } from "nookies"
+import { jwtDecode } from "jwt-decode"
 
 export function AppSidebarFooter() {
+  const [userName, setUserName] = useState<string>("")
   const { logout } = useLogout()
 
   const handleLogout = () => {
     logout()
   }
+
+  useEffect(() => {
+    const { token } = parseCookies();
+    if (token) {
+      try {
+        const decoded: { userName: string } = jwtDecode(token)
+        setUserName(decoded.userName || "Usuário")
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error)
+        setUserName("Usuário")
+      }
+    } else {
+      setUserName("Usuário")
+    }
+
+  }, [])
 
   return (
     <SidebarFooter>
@@ -26,7 +46,7 @@ export function AppSidebarFooter() {
                   <User className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Usuário</span>
+                  <span className="truncate font-semibold">{ userName }</span>
                   <span className="truncate text-xs text-slate-500">Scoutia Platform</span>
                 </div>
               </SidebarMenuButton>
