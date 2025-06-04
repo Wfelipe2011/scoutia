@@ -13,6 +13,7 @@ import {
 import { AppSidebarHeader } from "@/components/molecules/sidebar-header"
 import { NavItemComponent } from "@/components/atoms/nav-item"
 import { navigationItems } from "@/lib/navigation"
+import { AppSidebarFooter } from "@/components/molecules/sidebar-footer"
 
 export function AppSidebar() {
   return (
@@ -31,6 +32,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <AppSidebarFooter />
       <SidebarRail />
     </Sidebar>
   )

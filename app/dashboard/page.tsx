@@ -1,6 +1,4 @@
-"use client"
-
-import { MetabaseIframe } from "@/components/organisms/metabase-iframe"
+import MetabaseIframe  from "@/components/organisms/metabase-iframe"
 
 export default function DashboardPage() {
   return (

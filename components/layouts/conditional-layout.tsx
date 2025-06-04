@@ -4,8 +4,6 @@ import type React from "react"
 import { usePathname } from "next/navigation"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/organisms/app-sidebar"
-import { CoinBalance } from "@/components/atoms/coin-balance"
-import { useCoins } from "@/contexts/coins-context"
 
 interface ConditionalLayoutProps {
   children: React.ReactNode
@@ -13,7 +11,6 @@ interface ConditionalLayoutProps {
 
 export function ConditionalLayout({ children }: ConditionalLayoutProps) {
   const pathname = usePathname()
-  const { coins } = useCoins()
 
   // Lista de rotas que não devem ter sidebar
   const noSidebarRoutes = ["/login", "/register", "/forgot-password"]
@@ -33,10 +30,6 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
 
             <div className="flex flex-1 items-center justify-between gap-4">
               <h1 className="text-lg font-semibold text-slate-900 hidden sm:block">Scoutia Platform</h1>
-
-              <div className="ml-auto">
-                <CoinBalance amount={coins} size="sm" />
-              </div>
             </div>
           </header>
 
