@@ -1,12 +1,11 @@
 "use client"
 
-// import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
-// import { useJwt } from "./useJwt"
+import { useJwt } from "@/hooks/use-jwt"
 import { useHttp } from "@/hooks/use-http"
 import { io } from "socket.io-client"
-// import { useToast } from "./use-toast"
+import { parseCookies } from 'nookies'
 
 interface QRCodeResponse {
   qrCode: string
@@ -19,19 +18,18 @@ export const useWhatsappSocket = () => {
   const [qrCode, setQrCode] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [status, setStatus] = useState<Pick<QRCodeResponse, "status">["status"]>("pending")
-//   const { decodedToken } = useJwt()
-//   const { user } = useAuth()
+  const { decodedToken } = useJwt()
   const http = useHttp()
-//   const { toast } = useToast()
   const router = useRouter()
-
+  const cookies = parseCookies()
+  const token = cookies.token
+  
+  
   // Atualizar a URL do socket.io para a nova base de API
   useEffect(() => {
-    // if (!user) return
-    // const userData = decodedToken(user.token) as { userId: number }
-    const userData = { userId: 1 }
-    console.log("Iniciando conexão SSE...")
-    const url = process.env.NEXT_PUBLIC_API_URL
+    const userData = decodedToken(token) as { userId: number }
+    // console.log("Iniciando conexão SSE...")
+    const url = process.env.NEXT_PUBLIC_API_WHATSAPP_URL
     const socket = io(`${url}`, {})
 
     socket.on("connect", () => {
@@ -43,7 +41,6 @@ export const useWhatsappSocket = () => {
 
         if (data.qrCode) {
           const formattedQR = data.qrCode
-          console.log("🚀 ~ useEffect ~ formattedQR:", formattedQR)
           setQrCode(formattedQR)
         }
 
@@ -54,7 +51,6 @@ export const useWhatsappSocket = () => {
         } else if (data.status === "error") {
           setIsLoading(false)
           socket.close()
-          // alert(`Erro: ${data.message}`);
         } else if (data.status === "connected") {
           setIsLoading(false)
           socket.close()
@@ -77,7 +73,6 @@ export const useWhatsappSocket = () => {
     return () => {
       socket.close()
     }
-//   }, [user])
   }, [])
 
   const disconnectWhatsAppSession = useCallback(async () => {
@@ -89,10 +84,6 @@ export const useWhatsappSocket = () => {
         throw new Error("Falha ao desconectar a sessão do WhatsApp")
       }
 
-    //   toast({
-    //     title: "Desconectado",
-    //     description: "Sua sessão do WhatsApp foi desconectada com sucesso.",
-    //   })
       alert("Sua sessão do WhatsApp foi desconectada com sucesso.")
 
       await sleep(2000)
@@ -100,11 +91,6 @@ export const useWhatsappSocket = () => {
       router.push("/")
     } catch (error) {
       console.error("Erro ao desconectar a sessão do WhatsApp:", error)
-    //   toast({
-    //     title: "Erro",
-    //     description: "Falha ao desconectar a sessão do WhatsApp",
-    //     variant: "destructive",
-    //   })
       alert("Falha ao desconectar a sessão do WhatsApp")
     }
   }, [])
