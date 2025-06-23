@@ -67,9 +67,7 @@ export function useLoginForm() {
         path: "/",
       });
 
-      startTransition(() => {
-        router.push("/dashboard");
-      });
+      router.push("/dashboard");
     } else {
       alert("Login falhou!");
     }
